@@ -11,7 +11,30 @@
 
     const queue = [];
     const seen = new WeakSet();
+    const blockedAuthorIds = new Set();
     let processing = false;
+
+    // Build a single combined regex from the banned-words list. Whole-word,
+    // case-insensitive. Returns null when the list is empty.
+    const bannedRegex = (() => {
+        const list = (window.__BETTER_YT_BANNED_WORDS ?? [])
+            .map(w => String(w).trim())
+            .filter(Boolean);
+        if (list.length === 0) {
+            console.warn("[BetterYTLiveChat] No banned words configured — nobody will be blocked.");
+            return null;
+        }
+        const escaped = list.map(w => w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+        console.log(`[BetterYTLiveChat] Loaded ${list.length} banned word(s)/phrase(s).`);
+        return new RegExp(`\\b(?:${escaped.join("|")})\\b`, "i");
+    })();
+
+    function messageMatchesBannedWord(node) {
+        if (!bannedRegex) return null;
+        const text = node.querySelector('#message')?.textContent ?? "";
+        const match = text.match(bannedRegex);
+        return match ? match[0] : null;
+    }
 
     chrome.storage.local.get("enabled", (data) => {
         enabled = data.enabled ?? false;
@@ -81,6 +104,23 @@
         if (seen.has(node)) return;
         seen.add(node);
         logMessage(node);
+
+        // Don't try to block channel owners or moderators.
+        const authorType = node.getAttribute('author-type') || 'viewer';
+        if (authorType === 'owner' || authorType === 'moderator') return;
+
+        // Skip authors we've already queued for blocking — avoids stacking up
+        // duplicate block flows when a spammer posts multiple messages quickly.
+        const authorId = node.getAttribute('author-external-channel-id');
+        if (authorId && blockedAuthorIds.has(authorId)) return;
+
+        const matched = messageMatchesBannedWord(node);
+        if (!matched) return;
+
+        const authorName = node.querySelector('#author-name')?.textContent?.trim() || '(unknown)';
+        console.log(`[BetterYTLiveChat] Banned word "${matched}" matched — queueing block for ${authorName}.`);
+        if (authorId) blockedAuthorIds.add(authorId);
+
         queue.push(node);
         drainQueue();
     }

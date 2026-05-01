@@ -12,7 +12,7 @@
         "matches": [
             "https://www.youtube.com/*"
         ],
-        "js": ["content.js"],
+        "js": ["banned-words.js", "content.js"],
         "run_at": "document_idle"
         }
     ]
