@@ -197,6 +197,7 @@
             console.warn('[BetterYTLiveChat] Kebab button not found for', authorName);
             return;
         }
+        console.log('[BetterYTLiveChat] Found kebab button for', authorName, kebab);
         // Hover the message — YouTube hides the kebab via CSS unless hovered.
         node.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
         node.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
