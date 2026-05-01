@@ -1,0 +1,19 @@
+{
+    "manifest_version": 3,
+    "name": "Better YouTube Live Chat",
+    "version": "0.1.0",
+    "description": "Automatically blocks users who send messages in YouTube live chat.",
+    "permissions": ["storage"],
+    "action": {
+        "default_popup": "popup.html"
+    },
+    "content_scripts": [
+        {
+        "matches": [
+            "https://www.youtube.com/*"
+        ],
+        "js": ["content.js"],
+        "run_at": "document_idle"
+        }
+    ]
+}
