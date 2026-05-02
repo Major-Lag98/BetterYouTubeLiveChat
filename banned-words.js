@@ -10,7 +10,6 @@
  * (or click the reload button on the extension card).
  */
 window.__BETTER_YT_BANNED_WORDS = [
-    // examples — replace with your own list
     "nigger",
     "nigg",
     "faggot",

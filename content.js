@@ -14,24 +14,16 @@
     const blockedAuthorIds = new Set();
     let processing = false;
 
-    // Build a single combined regex from the banned-words list. Whole-word,
-    // case-insensitive. Returns null when the list is empty.
-    const bannedRegex = (() => {
-        const list = (window.__BETTER_YT_BANNED_WORDS ?? [])
-            .map(w => String(w).trim())
-            .filter(Boolean);
-        if (list.length === 0) {
-            console.warn("[BetterYTLiveChat] No banned words configured — nobody will be blocked.");
-            return null;
-        }
-        const escaped = list.map(w => w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
-        console.log(`[BetterYTLiveChat] Loaded ${list.length} banned word(s)/phrase(s).`);
-        return new RegExp(`\\b(?:${escaped.join("|")})\\b`, "i");
-    })();
+    const bannedRegex = buildBannedRegex(window.__BETTER_YT_BANNED_WORDS ?? []);
+    if (!bannedRegex) {
+        console.warn("[BetterYTLiveChat] No banned words configured — nobody will be blocked.");
+    } else {
+        console.log(`[BetterYTLiveChat] Loaded ${(window.__BETTER_YT_BANNED_WORDS ?? []).length} banned word(s)/phrase(s).`);
+    }
 
     function messageMatchesBannedWord(node) {
         if (!bannedRegex) return null;
-        const text = node.querySelector('#message')?.textContent ?? "";
+        const text = normalizeLeet(node.querySelector('#message')?.textContent ?? "");
         const match = text.match(bannedRegex);
         return match ? match[0] : null;
     }
