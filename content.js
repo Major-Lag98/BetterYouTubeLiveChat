@@ -57,8 +57,8 @@
     function startObserving() {
         const chatIframe = document.querySelector('#chatframe');
         if (!chatIframe) {
-            console.warn("Chat iframe not found yet, retrying...");
-            setTimeout(startObserving, 1000);
+            console.log("Chat iframe not found yet, retrying...");
+            setTimeout(startObserving, 5000);
             return;
         }
 
