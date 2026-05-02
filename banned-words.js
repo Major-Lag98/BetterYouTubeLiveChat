@@ -15,7 +15,10 @@ window.__BETTER_YT_BANNED_WORDS = [
     "nigg",
     "faggot",
     "fag",
+    "MAGA 2028",
     "trump 2028",
+    "trump is god",
+    "trump is king",
     "fire kimmel",
     "fire jimmy kimmel"
 ];
