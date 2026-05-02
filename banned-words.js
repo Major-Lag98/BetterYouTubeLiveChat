@@ -11,9 +11,11 @@
  */
 window.__BETTER_YT_BANNED_WORDS = [
     // examples — replace with your own list
-    "buy followers",
-    "free vbucks",
     "nigger",
+    "nigg",
     "faggot",
+    "fag",
     "trump 2028",
+    "fire kimmel",
+    "fire jimmy kimmel"
 ];
