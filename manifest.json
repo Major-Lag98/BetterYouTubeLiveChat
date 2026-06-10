@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "Better YouTube Live Chat",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "description": "Automatically blocks users who send messages in YouTube live chat.",
     "permissions": ["storage"],
     "action": {
@@ -9,11 +9,17 @@
     },
     "content_scripts": [
         {
-        "matches": [
-            "https://www.youtube.com/*"
-        ],
-        "js": ["banned-words.js", "content.js"],
-        "run_at": "document_idle"
+            "matches": ["https://www.youtube.com/*"],
+            "js": ["bridge.js"],
+            "run_at": "document_start",
+            "all_frames": true
+        },
+        {
+            "matches": ["https://www.youtube.com/*"],
+            "js": ["banned-words.js", "block-user.js", "content.js"],
+            "run_at": "document_idle",
+            "all_frames": true,
+            "world": "MAIN"
         }
     ]
 }
