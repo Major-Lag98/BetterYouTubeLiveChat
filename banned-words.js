@@ -10,15 +10,21 @@
  * (or click the reload button on the extension card).
  */
 window.__BETTER_YT_BANNED_WORDS = [
-    // examples — replace with your own list
+    // examples from chat
     "nigger",
     "nigg",
     "faggot",
     "fag",
+    "fagg",
+    "LIBTARD",
+    "CRY LIBERALS",
     "MAGA 2028",
     "trump 2028",
     "trump is god",
     "trump is king",
+    "GOD BLESS DONALD TRUMP",
+    "DONALD TRUMP IS MY LORD",
+    "hope + change = MAGA",
     "fire kimmel",
     "fire jimmy kimmel"
 ];
